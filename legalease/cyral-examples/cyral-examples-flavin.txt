@@ -1,0 +1,132 @@
+DataType [
+  AccountInfo,
+  AccountInfo:Email,
+  AccountInfo:CNN,
+  AccountInfo:SSN
+  ]
+
+AccessByRole [
+  Analyst,
+  Analyst:Locker,
+  Analyst:OperatingCostPredictor,
+  Analyst:Locker:Bob,
+  Analyst:Locker:Sara,
+  Analyst:OperatingCostPredictor:Alice,
+  Analyst:OperatingCostPredictor:Tom,
+  ]
+
+UseForPurpose [
+  Delete,
+  Read,
+  Update
+  ]
+
+Rows [
+  any
+  any:10,
+  any:10:1,
+  ]
+
+Example 1: Read-only access
+
+YAML:
+
+data: [EMAIL, CCN, SSN]
+rules:
+  - identities:
+      users: [bob]
+    reads:
+      data: any
+      rows: any
+  - identities:
+      users: [alice]
+    reads:
+      data: [EMAIL, CCN]
+      rows: 1
+    updates:
+      data: [EMAIL]
+      rows: 1
+
+LEGALEASE:
+
+DENY
+  DataType AccountInfo
+EXCEPT 
+  ALLOW
+    DataType AccountInfo:Email, AccountInfo:CNN
+    AccessByRole Analyst:Locker:Bob
+    UseForPurpose Read
+    Rows any
+  ALLOW
+    DataType AccountInfo:Email, AccountInfo:CNN
+    AccessByRole Analyst:OperatingCostPredictor:Alice
+    UseForPurpose Read, Update
+    Rows any:10:1
+  EXCEPT
+    DENY
+      DataType AccountInfo:CNN
+      UseForPurpose Update
+
+
+Example 2: Add a default rule
+
+YAML:
+
+data: [EMAIL, CCN, SSN]
+rules:
+  - identities:
+      users: [bob]
+    reads:
+      data: any
+      rows: any
+    updates:
+      data: [CCN]
+      rows: 1
+    deletes:
+      data: any
+      rows: 1
+  - identities:
+      users: [alice]
+    reads:
+      data: [EMAIL, CCN]
+      rows: 1
+    updates:
+      data: [EMAIL]
+      rows: 1
+  - reads:
+      data: [EMAIL]
+      rows: 1
+
+LEGALEASE:
+
+DENY
+  DataType AccountInfo
+EXCEPT 
+  ALLOW
+    DataType AccountInfo
+    AccessByRole Analyst:Locker:Bob
+    UseForPurpose Delete, Read, Update
+    Rows any
+  EXCEPT
+    DENY
+      DataType AccountInfo:Email, AccountInfo:SSN
+      UseForPurpose Update
+      Rows any
+    DENY
+      DataType AccountInfo
+      UseForPurpose Delete
+      Rows any:10
+  ALLOW
+    DataType AccountInfo:Email, AccountInfo:CNN
+    AccessByRole Analyst:OperatingCostPredictor:Alice
+    UseForPurpose Read, Update
+    Rows any:10:1
+  EXCEPT
+    DENY
+      DataType AccountInfo:CNN
+      UseForPurpose Update
+  ALLOW
+    DataType AccountInfo:Email
+    UseForPurpose Read
+    Rows any:10:1
+

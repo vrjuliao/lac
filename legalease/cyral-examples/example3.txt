@@ -1,0 +1,79 @@
+-- YAML
+data: [EMAIL, CCN, SSN]
+rules:
+  - identities:
+      users: [bob, tom, alex]
+    reads:
+      data: any
+      rows: any
+    updates:
+      data: [CCN]
+      rows: 1
+    deletes:
+      data: any
+      rows: 1
+  - identities:
+      users: [alice, jeff]
+    reads:
+      data: [EMAIL, CCN]
+      rows: 1
+    updates:
+      data: [EMAIL]
+      rows: 1
+
+-- Legalease
+DENY
+EXCEPT
+  ALLOW AccessByRole bob
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole tom
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole alex
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole alice
+  EXCEPT
+    DENY UseForPurpose delete
+    DENY UseForPurpose read
+      EXCEPT
+        ALLOW DataType EMAIL
+              Rows 1
+        ALLOW DataType CCN
+              Rows 1
+      DENY UseForPurpose update
+      EXCEPT
+        ALLOW DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole jeff
+  EXCEPT
+    DENY UseForPurpose delete
+    DENY UseForPurpose read
+    EXCEPT
+      ALLOW DataType EMAIL
+            Rows 1
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose update
+    EXCEPT
+      ALLOW DataType EMAIL
+      Rows 1

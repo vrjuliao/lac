@@ -1,0 +1,15 @@
+-- YAML
+data: [EMAIL, CCN, SSN]
+rules:
+  - identities:
+      services: [operatingCostPredictor]
+    reads:
+      data: [CCN]
+      rows: any
+
+-- Legalease
+DENY
+EXCEPT
+  ALLOW AccessByRole operatingCostPredictor
+        UseForPurpose read
+        DataType CCN

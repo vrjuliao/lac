@@ -1,0 +1,162 @@
+UseForPurpose
+  - read
+  - update
+  - delete
+
+AccessByRole Groups/Users
+
+DataType
+  - EMAIL
+  - CCN
+  - SSN
+
+-- First YAML rule
+DENY
+EXCEPT
+  ALLOW UseForPurpose read
+        DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole analyst
+        UseForPurpose read
+        Rows 10
+  ALLOW AccesByRole analyst
+        UseForPurpose update
+        DataType EMAIL, CCN
+        Rows 1
+  ALLOW AccessByRole analyst
+        UseForPurpose delete
+        Rows 1
+  ALLOW AccessByRole bob
+  EXCEPT 
+    DENY UseForPurpose update
+         DataType SSN
+
+-- Contexted Rules
+DENY
+EXCEPT
+  ALLOW AccessByRole analyst
+        UseForPurpose read
+        Rows 10
+  ALLOW AccessByRole analyst
+        UseForPurpose update
+        Rows 1
+        DataType EMAIL, CCN
+  ALLOW AccessByRole analyst
+        UseForPurpose delete
+        Rows 1
+
+-- Example 1: Read-only Access
+DENY
+EXCEPT
+  ALLOW AccessByRole bob
+        UseForPurpose read
+  ALLOW AccessByRole alice
+        UseForPurpose read
+        DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole alice
+        UseForPurpose read
+        DataType CCN
+        Rows 1
+  ALLOW AccessByRole alice
+        UseForPurpose update
+        DataType EMAIL
+        Rows 1
+
+-- Example 2: Adding a default rule
+DENY
+EXCEPT
+  ALLOW UseForPurpose read
+        DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole bob
+        UseForPurpose read
+  ALLOW AccessByRole bob
+        UseForPurpose update
+        DataType CCN
+        Rows 1
+  ALLOW AccessByRole bob
+        UseForPurpose delete
+        Rows 1
+  ALLOW AccessByRole alice
+        UseForPurpose read
+        DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole alice
+        UseForPurpose read
+        DataType CCN
+        Rows 1
+  ALLOW AccessByRole alice
+        UseForPurpose update
+        DataType EMAIL
+        Rows 1
+
+-- Example 3: Apply the same rules to a group of users
+DENY
+EXCEPT
+  ALLOW AccessByRole bob
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole tom
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole alex
+  EXCEPT
+    DENY UseForPurpose update
+    EXCEPT 
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose delete
+    EXCEPT 
+      ALLOW Rows 1
+  ALLOW AccessByRole alice
+  EXCEPT
+    DENY UseForPurpose delete
+    DENY UseForPurpose read
+      EXCEPT
+        ALLOW DataType EMAIL
+              Rows 1
+        ALLOW DataType CCN
+              Rows 1
+      DENY UseForPurpose update
+      EXCEPT
+        ALLOW DataType EMAIL
+        Rows 1
+  ALLOW AccessByRole jeff
+  EXCEPT
+    DENY UseForPurpose delete
+    DENY UseForPurpose read
+    EXCEPT
+      ALLOW DataType EMAIL
+            Rows 1
+      ALLOW DataType CCN
+            Rows 1
+    DENY UseForPurpose update
+    EXCEPT
+      ALLOW DataType EMAIL
+      Rows 1
+
+-- Example 4: Apply rule to a service identified by its name
+DENY
+EXCEPT
+    ALLOW AccessByRole operatingCostPredictor
+          UseForPurpose read
+          DataType CCN
+
+-- Example 5: Apply rule to users accessing data through Looker
+DENY
+EXCEPT
+    ALLOW AccessByRole looker
+          UseForPurpose read

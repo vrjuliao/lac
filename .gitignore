@@ -1,0 +1,18 @@
+# ANTLR-KOTLIN
+antlr-kotlin/generated-src
+antlr-kotlin/.gradle
+antlr-kotlin/gradle
+antlr-kotlin/.idea
+antlr-kotlin/build
+antlr-kotlin/antlr-kotlin*
+*gradlew*
+
+
+# Legalease tests
+legalease/parser/Legalease*.java
+legalease/parser/Legalease*.class
+legalease/parser/*.interp
+legalease/parser/*.tokens
+
+# Mac default files/folders
+*.DS_Store

@@ -1,0 +1,17 @@
+DENY
+  DataType AccountInfo
+EXCEPT 
+  ALLOW
+    DataType AccountInfo:Email, AccountInfo:CNN
+    AccessByRole Analyst:Locker:Bob
+    UseForPurpose Read
+    Rows any
+  ALLOW
+    DataType AccountInfo:Email, AccountInfo:CNN
+    AccessByRole Analyst:OperatingCostPredictor:Alice
+    UseForPurpose Read, Update
+    Rows any:10:1
+  EXCEPT
+    DENY
+      DataType AccountInfo:CNN
+      UseForPurpose Update

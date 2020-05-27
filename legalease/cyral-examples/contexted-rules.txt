@@ -1,0 +1,33 @@
+-- YAML
+identities: 
+  groups: [analyst]
+reads:
+  data: any
+  rows: 10
+updates:
+  data: [EMAIL, CCN]
+  rows: 1
+  severity: medium
+deletes:
+  data: any
+  rows: 1
+  severity: medium
+
+
+-- Legalease
+DENY
+EXCEPT
+  ALLOW AccessByRole analyst
+        UseForPurpose read
+        Rows 10
+  ALLOW AccessByRole analyst
+        UseForPurpose update
+        Rows 1
+        DataType EMAIL
+  ALLOW AccessByRole analyst
+        UseForPurpose update
+        Rows 1
+        DataType CCN
+  ALLOW AccessByRole analyst
+        UseForPurpose delete
+        Rows 1

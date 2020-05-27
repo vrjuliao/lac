@@ -1,0 +1,7 @@
+-- YAML
+
+-- Legalease
+DENY
+EXCEPT
+  ALLOW AccessByRole looker
+        UseForPurpose read

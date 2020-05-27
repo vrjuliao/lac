@@ -1,0 +1,70 @@
+buildscript {
+   ext.kotlin_version = '1.3.72'
+
+   repositories {
+     mavenCentral()
+     maven {
+        name 'JFrog OSS snapshot repo'
+        url  'https://oss.jfrog.org/oss-snapshot-local/'
+     }
+     jcenter()
+   }
+
+   dependencies {
+     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//     classpath ".:/usr/local/lib/antlr-4.8-complete.jar"
+   }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'antlr'
+
+mainClassName = 'me.vrjuliao.sandy.Sandy'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+  antlr "org.antlr:antlr4:4.8"
+  compile "org.antlr:antlr4-runtime:4.8"
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+  testCompile 'junit:junit:4.12'
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-visitor', '-long-messages', '-package', 'me.vrjuliao.langsandbox']
+    outputDirectory = file("generated-src/antlr/main/me/vrjuliao/langsandbox".toString())
+}
+compileKotlin.dependsOn generateGrammarSource
+compileJava.dependsOn generateGrammarSource
+
+sourceSets {
+    generated {
+        java.srcDir 'generated-src/antlr/main/'
+    }
+    main {
+        java.srcDirs += 'src/main/kotlin'
+    }
+}
+//compileJava.source sourceSets.generated.java, sourceSets.main.java, sourceSets.main.kotlin
+compileKotlin.source sourceSets.generated.java, sourceSets.main.java, sourceSets.main.kotlin
+
+clean{
+    delete "generated-src"
+}
+
+idea {
+    module {
+        sourceDirs += file("generated-src/antlr/main")
+    }
+}
