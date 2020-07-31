@@ -56,7 +56,7 @@ sourceSets {
         java.srcDirs += 'src/main/kotlin'
     }
 }
-//compileJava.source sourceSets.generated.java, sourceSets.main.java, sourceSets.main.kotlin
+compileJava.source sourceSets.generated.java, sourceSets.main.java, sourceSets.main.kotlin
 compileKotlin.source sourceSets.generated.java, sourceSets.main.java, sourceSets.main.kotlin
 
 clean{
