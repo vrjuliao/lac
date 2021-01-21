@@ -1,0 +1,191 @@
+\documentclass[sigplan,screen,anonymous,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+
+% TODO: take a look into the program in which all the 250 sequences were better.
+
+\bibliographystyle{ACM-Reference-Format}
+
+% \citestyle{acmauthoryear}   %% For author/year citations
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{lineno}
+\usepackage{url}
+\usepackage{soul}
+\usepackage{microtype}
+
+\def\qed{\unskip\kern 10pt{\unitlength1pt\linethickness{.4pt}\framebox(6,6){}}}
+
+\newcommand{\Hapi}{\mbox{\textsc{Hapi}}}
+
+\setlength{\belowcaptionskip}{-7pt}
+
+\soulregister\cite7
+
+\newcommand{\fer}[1]{\textcolor{green}{#1}}
+\newcommand{\vin}[1]{\textcolor{blue}{#1}}
+\newcommand{\alx}[1]{\textcolor{red}{#1}}
+
+
+\begin{document}
+
+\title[Hapi: A Domain Specific Language for the Specification of Access Policies]
+{Hapi: A Domain Specific Language for the Specification of Access Policies}
+% \subtitle{Subtitle Text, if any}
+
+\author{Vin\'{i}cius Juli\~{a}o}
+\orcid{0000-0002-8588-8197}
+\affiliation{
+  \institution{UFMG}
+  \streetaddress{Avenida Antônio Carlos, 6627}
+  \city{Belo Horizonte}
+  \state{Minas Gerais}
+  \postcode{31.270-213}
+  \country{Brazil}
+}
+\email{vinicius@dcc.ufmg.br.br}
+
+\author{Alexander Holmquist}
+\orcid{0000-0002-8588-8197}
+\affiliation{
+  \institution{UFMG}
+  \streetaddress{Avenida Antônio Carlos, 6627}
+  \city{Belo Horizonte}
+  \state{Minas Gerais}
+  \postcode{31.270-213}
+  \country{Brazil}
+}
+\email{alexander@dcc.ufmg.br.br}
+
+\author{Fernando M. Quint\~{a}o Pereira}
+\orcid{nnnn-nnnn-nnnn-nnnn}
+\affiliation{
+%  \department{DCC}
+  \institution{UFMG}
+  \streetaddress{Avenida Antônio Carlos, 6627}
+  \city{Belo Horizonte}
+%  \state{Minas Gerais}
+  \postcode{31.270-213}
+  \country{Brazil}
+}
+\email{fernando@dcc.ufmg.br}
+
+%\thanks{Thank people here}                %% \thanks is optional
+
+\begin{abstract}
+Hapi (short for Hierarchical Access Policy Implementation), is a specification
+language that lets users define access policies.
+In a distributed system, an access policy defines the actions that each actor
+can perform on the available resources. 
+Such policies are important because they ensure the preservation of the
+integrity and the privacy of personal information that users might store
+into remotely accessed databases.
+
+\fer{Finish the abstract.}
+\end{abstract}
+
+%% 2012 ACM Computing Classification System (CSS) concepts
+%% Generate at 'http://dl.acm.org/ccs/ccs.cfm'.
+\begin{CCSXML}
+ <ccs2012>
+ <concept>
+ <concept_id>10011007.10011006.10011041.10011048</concept_id>
+ <concept_desc>Software and its engineering~Runtime environments</concept_desc>
+ <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+ <concept_id>10011007.10011006.10011041</concept_id>
+ <concept_desc>Software and its engineering~Compilers</concept_desc>
+ <concept_significance>500</concept_significance>
+ <concept>
+ <concept_id>10011007.10011006.10011072</concept_id>
+ <concept_desc>Software and its engineering~Software libraries and repositories</concept_desc>
+ <concept_significance>300</concept_significance>
+ </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Runtime environments}
+\ccsdesc[500]{Software and its engineering~Compilers}
+\ccsdesc[300]{Software and its engineering~Software libraries and repositories}
+
+\keywords{Benchmark, Repository, Synthesis, Training}  %% \keywords is optional
+
+\maketitle
+
+%\renewcommand{\shortauthors}{Marcos Siraichi, Vin\'{i}cius Santos,
+%Sylvain Collange, Fernando Pereira}
+
+\section{Introduction}
+\label{sec:intro}
+
+\fer{Context: explain what is access policies; where they are used; add at least five references.}
+% References of access policies: YaPPL (for IoT), 
+
+Access policies are a set of rules whose a system uses to allow or deny some
+operation.
+Immutable rules can also be called static access policies, as login routine,
+where the rule is having the tuple $(username, password)$ stored in a database.
+But there are systems that need dynamic access policies, in which there is a
+way to specify and change such rules.
+An example of the second case, is the IoT applications in which it must be
+possible to allow or deny a resource of getting information from a sensor in
+the network.
+For that example, YaPPL\cite{} can be a solution, since that defines a set of
+keywords in a specific JSON format.
+Using this language it is possible define a rule for an \textit{utilizer}
+with a \textit{purpose} that get some information by a \textit{transformation}.
+Due to the limited quantity of keywords, the power of that language is also
+limited, although it specifies policies dynamically.
+
+% Dar um outro exemplo de linguagem que também possui a limitação de não possuir
+% uma declaração dos dados utilizados.
+
+% A linguagem (que eu estudei uma vez e esqueci o nome) permite o uso de tipos
+% primitivos de dados, e isso gera maior flexibilidade, assim como Hapi
+
+
+% This paper is focused in this second class, by introducing a DSL
+% (\textit{Domain Specific Language}) capable of expressing a set of rules and
+% delivery them for a system in a useful structure.
+
+\fer{Problem: explain why hierarchical access is important. Explain that exists legalease, but that is has never been fully defined.}
+
+\fer{Solution: introduce our implementation of Hapi.}
+
+\fer{Results: describe the toosl that we currently have.}
+
+\section{Examples}
+\label{sec:examples}
+
+\fer{We need two or three examples that illustrate how Hapi is cool!}
+
+\fer{We need at least one example that illustrates how Legalease is poorly defined.}
+
+\section{Language Specification}
+\label{sec:spec}
+
+\subsection{Syntax}
+\label{sub:syntax}
+
+\subsection{Semantics}
+\label{sub:semantics}
+
+\section{Tools}
+\label{sec:tools}
+
+\subsection{Parser and Translators}
+\label{sub:parser}
+
+\subsection{The Graphical User Interface}
+\label{sub:gui}
+
+\section{Related Work}
+\label{sec:rw}
+
+\section{Conclusion}
+\label{sec:conc}
+
+\bibliography{references}
+
+\end{document}
