@@ -128,15 +128,24 @@ Immutable rules can also be called static access policies, as login routine,
 where the rule is having the tuple $(username, password)$ stored in a database.
 But there are systems that need dynamic access policies, in which there is a
 way to specify and change such rules.
-An example of the second case, is the IoT applications in which it must be
-possible to allow or deny a resource of getting information from a sensor in
-the network.
-For that example, YaPPL\cite{} can be a solution, since that defines a set of
-keywords in a specific JSON format.
-Using this language it is possible define a rule for an \textit{utilizer}
-with a \textit{purpose} that get some information by a \textit{transformation}.
+An example of this case, is the IoT applications which demand a ser of policies
+to allow or deny a resource of getting information from a sensor in the network.
+For that example, YaPPL\cite{} can be a solution, since it makes possible to
+specify different policies in a specific JSON format.
+This language defines a set of keyword to map a \textit{rule} for an
+\textit{utilizer} with a \textit{purpose} that get some information by a
+\textit{transformation}.
 Due to the limited quantity of keywords, the power of that language is also
 limited, although it specifies policies dynamically.
+
+The problem of limited attributes also occurs with others access policy
+languages, like [...], [...].
+However, [...] uses the declaration of attributes with primitive data types,
+giving more flexibility at the access policies.
+Then, still about IoT systems, if another application demands a rule checking
+according to the network address, further than YaPPL's attributes, it can be
+done by the data declaration of [..a linguagem que to falando aqui..].
+
 
 % Dar um outro exemplo de linguagem que também possui a limitação de não possuir
 % uma declaração dos dados utilizados.
@@ -170,6 +179,77 @@ limited, although it specifies policies dynamically.
 
 \subsection{Semantics}
 \label{sub:semantics}
+Before showing the policy evaluation, we need to understand the Access Entity
+concept.
+An Access Entity $AE$ is a set of labeled attributes, where each label is
+unique.
+Then we can imagine it as a C++ map, or a JSON for instance, which each label
+is a string.
+All \texttt{data} statements must have a corresponding label within $AE$ where
+according to this link we shall define if an Access Entity is allowed or
+denied.
+For that decision, a Hapi policy can be viewed as list of tuples, representing
+the allowed access entities.
+The tuple size is the same of the number of \texttt{data} statements, since
+each element in a tuple represents a value of the declared data.
+Finally, a tuple is an access key where whatever $AE$ that satisfies all
+elements inside this key, can pass through the policy.
+
+To illustrate a real scenario, suppose a global system for university students.
+A part of that system is exclusive only for USA students in the Economy course.
+A short policy example, can be:
+% data University: USA(MIT, UCLA), JAPAN(TokyoUniversity), MIT, UCLA, TokyoUniversity;
+% data Course: Technologies(ComputerScience, Robotics), Finances(Accounting, Economy),
+%              ComputerScience, Robotics, Accounting, Economy;
+
+% main = 
+% DENY
+% EXCEPT {
+%   ALLOW {
+%     University: USA;
+%     Course: Economy;
+%   }
+% };
+
+This policy means the following tuple list
+\texttt{[(MIT, Economy), (UCLA, Economy)]}, and according to that policy, an
+allowed access entity might be \texttt{\{"Name": "Carolina", "University":
+"MIT", "Course": "Economy"\}}.
+Observe that the labeled attribute \texttt{name} is ignored, since it is not
+considered in the Hapi policy, despite this, \texttt{Carolina}'s access entity
+complies with \texttt{Economy} and \texttt{USA}.
+In the same case, other entity as \texttt{\{"Name": "Bernard", "University":
+"MIT", "Course": "ComputerScience"\}} cannot access, once this does not meet
+Economy course.
+
+% @TODO: explicar a idéia (em alto nível) de como a tupla foi gerada: 
+%  - primeiro uma política negado por padrão
+%  - depois uma exceção que gerou o allow para os dados informados.
+
+In the section \ref{sub:parser} we will show our \textit{Intermediary
+Relationship} -- IR --, that allows us to manipulate the policy information.
+Using the IR we can easily generate the tuples list, since these two structures are
+equivalent each other.
+For now, we just assume the existence of the IR as a directed graph were
+the edge \texttt{Attribute1} $\rightarrow$ \texttt{Attribute2} represents that
+the two attributes are in the same tuple.
+Inside the IR graph, we have two node types: \texttt{NonTerminal} as the
+intermediary node type and \texttt{Terminal} as the leaves.
+
+% def get_tuples_from(current_node, tuple):
+%   tuple.add(current_node.value)
+%   if current_node is Terminal:
+%     return [tuple]
+%   else:
+%     l = []
+%     l = l + get_tuples_from(current_node.next, tuple)
+%     return l
+
+% def tuples_list(IR):
+%   l = []
+%   for start_node in IR:
+%     l = l + get_tuples_from(start_node, ())
+%   return l
 
 \section{Tools}
 \label{sec:tools}
