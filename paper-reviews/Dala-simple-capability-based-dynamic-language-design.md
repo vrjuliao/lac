@@ -99,4 +99,4 @@ For this case, we have: Efficient & Complex, Inefficient & Complex, Inefficient
     But the author did not say where Dala is in.
 4. Things in the paper that were hard to understand.
    1. Section 2.1: lines 123 until 127:
-   Why hash maps have this problem?
+   Why do hash maps have this problem?
