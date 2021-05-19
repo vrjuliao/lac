@@ -88,3 +88,80 @@ A scalar $x$ can be privatized whether in a loop $l$, and its correspondent
 execution graph $G_l$, for each incoming edge $n.k$ in $x$ there is an out
 coming edge $m.k$ where $m > n$.
 It configures a *first Write and then Read* operation.
+
+## Array privatization
+
+Even for an array $A$ that have only *first Write and then Read* and does not
+share element access between different iterations of a loop $L$, it is not
+possible parallelize such loop for a shared $A$.
+The solution is to create a copy of $A$ for each parallel execution, where this
+copy only belongs to that thread, in other words, privatizing the array.
+For nested loops, there are some conditions to be satisfied to decide which
+nesting loop can be parallelized.
+Such decision follows the Theorem 2:
+1. .  
+  a. Since there is an incoming edge $n.x.j$ and the out coming one as $m.y.p$,
+  when $n<m$ for $y=x, j=p$ we identify a *first Write and then Read* operation
+  inside the deepest loop.\
+  \
+  b. Once the item 1.a is not satisfied, when a specific position $u$ of the
+  array $A$ has an incoming edge $n.x.j$ and the out coming being $m.y.p$,
+  for $x=y$, we have that $u$ is accessed by the same iteration of the extern
+  loop. In addition, when $p \geq j$ from the point of view of the extern loop $u$ is always *first Written and then Read*.
+  So we can privatize the $A$ for the extern loop.
+
+2. If there is either a reading or a writing operation for every $u \in A$, the
+   *first Write and then Read* is true by default.
+
+# Reviewing
+
+## Novelty
+Grade 2.
+
+The key novelty of this paper, was introduced in the last paper about the DDI,
+then it can be considered as an increment of the DDI one.
+DDI maps instructions through a directed graph where these instructions are
+separated in two groups: Read and Write.
+Finally, the paper discuss about an observation over the nodes and edges in the
+DDI graph.
+The conditions that become the array or scalar privatization possible, are not
+a novelty, actually it can be considered an insight instead.
+
+## Correctness
+Grade 3.
+
+Theorem proofs are pretty correct, but there is an attention point:
+The paper introduce the DDI as an compiling tool, but the examples and
+explanation are given as an interpreter, or something made in runtime.
+Despite that, algorithms and functionalities are easy to understand.
+One example of that is expressed in the loops explanation, the DDI creates one
+node in the graph for each instruction and iteration executed inside the loop.
+So, as a compiling tool, the program should not explain it in this way.
+
+## Rigour of the evaluation
+Grade 3.
+
+As said in the correctness, a rigorous evaluation would consider explain the
+algorithms in a different manner than a runtime $-$ maybe through a statical
+analysis framework.
+Even though the paper introduce only an insight (from my point of view), the
+subjects are presented using algorithms, theorems and easy-to-read examples,
+that make the reading a pretty of intuitive.
+Besides, the text structure was well defined, the section **Scalar**
+**privatization** is almost suffice to understand the **Array privatization**,
+so this organization deserve congratulations.
+Lastly, the text is composed by short/objective/clear phrases, that do not tire
+the reader.
+
+## Treatment of related work
+Grade 2.
+
+The paper states that DDI treat the data dependence as a never seen before way,
+because of that the related works are used only for enumerating other works
+involving array/scalar privatization or intermediary representations.
+There are no comparisons between the DDI and the other works, and these related
+works are superficially shown, do not showing why DDI is a good approach.
+Only the first paper of the page contains citations of related works, maybe
+when the graph construction was introduced, the paper could cite the main
+difference between such graph and any other graphical representation of data
+dependence.
