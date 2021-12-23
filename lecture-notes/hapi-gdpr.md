@@ -115,3 +115,43 @@ report to the highest management level of the controller or the processor."
   Since we declare the *controller* and the *processor* as two different
   groups of a same poset, *Actors* for instance, it is possible to write
   a policy in Hapi to handle that rule.
+
+  
+### Article 71
+[https://gdpr.eu/article-71-data-protection-board-annual-reports/](https://gdpr.eu/article-71-data-protection-board-annual-reports/)
+
+Paragraph 2:
+"The annual report shall include a review of the practical application of the
+guidelines, recommendations and best practices referred to in point (l) of
+Article 70(1) as well as of the binding decisions referred to in Article 65."
+
+- Hapi is an example of practical application that can fill the list of best
+  practices.
+  With the advent of data protection laws, lots of tools shall help companies
+  to comply with countries rules.
+  Hapi is one of these tools.
+
+### Article 83
+[https://gdpr.eu/article-83-conditions-for-imposing-administrative-fines/](https://gdpr.eu/article-83-conditions-for-imposing-administrative-fines/)
+
+Paragraph 2:
+"Administrative fines shall, depending on the circumstances of each individual
+case, be imposed in addition to, or instead of, measures referred to in points
+(a) to (h) and (j) of Article 58(2). When deciding whether to impose an
+administrative fine and deciding on the amount of the administrative fine in
+each individual case due regard shall be given to the following:"
+
+- Letter **c**: Hapi is given as a support tool that complies with this
+  requirement, then, administrative fines might be relaxed when a policy
+  description language is used by the company (controller).
+- Letter **g**: Since Hapi groups information as POSETS, it is relatevely easy
+  to understand which data is infriged laws and permissions.
+
+Parapraph 4:
+"Infringements of the following provisions shall, in accordance with paragraph
+2, be subject to administrative fines up to 10 000 000 EUR, or in the case of
+an undertaking, up to 2 % of the total worldwide annual turnover of the
+preceding financial year, whichever is higher:"
+- Letter **a**: It's important to say that to avoid this imposed penalty tax,
+  a Hapi policy shoud be written through a *denied by default* approach, as it
+  is demanded by Article 25.
